@@ -1,12 +1,15 @@
 function getLayers(thisStage, thisLayer, callback) {
-    for (var i=1;i<111;i++)
+    var MAX = 390;
+    var count = 0;
+    for (var i=1;i<=MAX;i++)
     {
         $.ajax({
             type: "GET",
             dataType: "json",
             url: "http://10.74.48.98:3000/status/" + i.toString(),
             success: function(ws){
-//               console.log(ws);
+//               console.log("SS:" + ws);
+                count++;
                 if (ws === null)
                 {
                     // no entry
@@ -15,21 +18,46 @@ function getLayers(thisStage, thisLayer, callback) {
 //                   var status = $(ws).find('Status').text();
                     var status = ws.Status;
 //                    console.log(status);
+                    /*
+                     "Unknown",
+                     "Updating",
+                     "Starting",
+                     "Running",
+                     "Errors",
+                     "Stopping",
+                     "Stopped",
+                     "Rebooting",
+                     "OVER LIMIT"
+                     */
+
                     if (status === "Errors") {
-                        r=1;
+                        r=4;
                     } else if (status === "Running") {
-                        r=2;
-                    } else {
                         r=3;
+                    } else if (status === "Starting") {
+                        r=2;
+                    } else if (status === "Updating") {
+                        r=1;
+                    } else if (status === "Rebooting") {
+                        r=7;
+                    } else if (status === "Stopped") {
+                        r=6;
+                    } else if (status === "Stopping") {
+                        r=5;
+                    } else {
+                        r=0;
                     }
 //                    console.log(status, r);
                 }
-//                console.log(stage, layer);
-                drawEntry(thisStage, thisLayer, i, r);
+//                console.log("XX:" + count, thisStage, thisLayer);
+                drawEntry(thisStage, thisLayer, count, r);
+                if (count === MAX) {
+                    console.log("finished")
+                    thisStage.add(thisLayer);
+                }
             }
         });
     }
-    callback(thisLayer);
 };
 
 window.onload = function() {
@@ -40,11 +68,12 @@ window.onload = function() {
         height: 800
     });
 
+
     var layer = new Kinetic.Layer();
 
     getLayers(stage, layer, function(){
         console.log(stage, layer);
-        stage.add(layer);
+        // stage.add(layer);
     });
 }
 

@@ -19,8 +19,8 @@ function drawEntry(stage, layer, id, status) {
     var xx = margin + (rWidth + gap) * ((id-1) % colWidth);
     var yy = margin + (rHeight + gap) * Math.floor((id-1)/colWidth);
 
-//    console.log(xx.toString() + "," + yy.toString());
-    console.log(status);
+//    console.log("WW:" + id.toString() + "," + xx.toString() + "," + yy.toString());
+//    console.log(status);
 
     var rect = new Kinetic.Rect({
         x: xx,
@@ -29,29 +29,61 @@ function drawEntry(stage, layer, id, status) {
         height: rHeight,
         fill: 'red',
         stroke: 'black',
-        strokeWidth: 2
+        strokeWidth: 2,
+        id:'R' + id.toString()
     });
 
+/*
+    if (status === "Errors") {
+        r=4;
+    } else if (status === "Running") {
+        r=3;
+    } else if (status === "Starting") {
+        r=2;
+    } else if (status === "Updating") {
+        r=1;
+    } else if (status === "Rebooting") {
+        r=7;
+    } else if (status === "Stopped") {
+        r=6;
+    } else if (status === "Stopping") {
+        r=5;*/
     switch(status)
     {
         case 0:
-            console.log("zero");
+//            console.log("zero");
             rect.setFill('cyan')
             break;
         case 1:
-            console.log("one");
-            rect.setFill('green')
+//            console.log("one");
+            rect.setFill('yellow')
             break;
         case 2:
-            console.log("two");
-            rect.setFill('red')
+//            console.log("two");
+            rect.setFill('yellow')
             break;
         case 3:
-            console.log("three");
+//            console.log("three");
+            rect.setFill('green')
+            break;
+        case 4:
+//            console.log("three");
+            rect.setFill('red')
+            break;
+        case 5:
+//            console.log("three");
+            rect.setFill('orange')
+            break;
+        case 6:
+//            console.log("three");
+            rect.setFill('orange')
+            break;
+        case 7:
+//            console.log("three");
             rect.setFill('orange')
             break;
         default:
-            console.log("default");
+//            console.log("default");
             rect.setFill('yellow')
     };
 
